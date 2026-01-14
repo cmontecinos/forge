@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/bigbytes/forge/internal/stacks"
 	"github.com/bigbytes/forge/internal/templates"
 	"github.com/spf13/cobra"
 )
@@ -114,8 +115,9 @@ func runNew(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	// Get template configuration for selected stack
-	config := templates.GetConfigForStack(string(stack))
+	// Get template configuration for selected stack from registry
+	s, _ := stacks.Get(string(stack))
+	config := s.TemplateConfig()
 
 	// Convert features to string slice for TemplateData
 	featureStrings := make([]string, len(features))
@@ -161,7 +163,9 @@ func getStackSelection(cmd *cobra.Command) (StackType, error) {
 	if cmd.Flags().Changed("stack") {
 		st, ok := ParseStackType(stackFlag)
 		if !ok {
-			return "", fmt.Errorf("invalid stack type: %s (must be 'web' or 'mobile')", stackFlag)
+			// Build list of valid stack IDs for error message
+			ids := stacks.IDs()
+			return "", fmt.Errorf("invalid stack type: %s (must be one of: %s)", stackFlag, strings.Join(ids, ", "))
 		}
 		return st, nil
 	}

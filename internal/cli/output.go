@@ -54,10 +54,11 @@ func PrintNextSteps(projectName string, stack StackType, duration float64) {
 	Header("Next steps")
 	fmt.Printf("  cd %s\n", projectName)
 
-	switch stack {
-	case StackWeb:
+	// Stack-specific next steps based on stack ID
+	switch string(stack) {
+	case "web":
 		fmt.Println("  npm install && npm run dev")
-	case StackMobile:
+	case "mobile":
 		fmt.Println("  npm install && npx expo start")
 	}
 

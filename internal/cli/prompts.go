@@ -5,15 +5,11 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/bigbytes/forge/internal/stacks"
 )
 
-// StackType represents the type of project stack
+// StackType represents the type of project stack (maps to stack ID)
 type StackType string
-
-const (
-	StackWeb    StackType = "web"
-	StackMobile StackType = "mobile"
-)
 
 // Feature represents optional features that can be added to a project
 type Feature string
@@ -24,18 +20,6 @@ const (
 	FeatureAPI      Feature = "api"
 )
 
-// stackOptions maps display names to StackType values
-var stackOptions = []string{
-	"Web (Next.js + Go + Supabase)",
-	"Mobile (Expo + Go + Supabase)",
-}
-
-// stackMapping maps display names to StackType
-var stackMapping = map[string]StackType{
-	"Web (Next.js + Go + Supabase)":    StackWeb,
-	"Mobile (Expo + Go + Supabase)": StackMobile,
-}
-
 // featureOptions for multi-select display
 var featureOptions = []string{
 	"Auth - Login/registro via backend",
@@ -45,17 +29,24 @@ var featureOptions = []string{
 
 // featureMapping maps display names to Feature values
 var featureMapping = map[string]Feature{
-	"Auth - Login/registro via backend":    FeatureAuth,
-	"Database - Conexión Go-Supabase":      FeatureDatabase,
+	"Auth - Login/registro via backend":   FeatureAuth,
+	"Database - Conexión Go-Supabase":     FeatureDatabase,
 	"API - Router, middlewares, handlers": FeatureAPI,
 }
 
 // PromptStackSelection prompts the user to select a stack type
 func PromptStackSelection() (StackType, error) {
+	// Build options dynamically from registry
+	allStacks := stacks.All()
+	options := make([]string, len(allStacks))
+	for i, s := range allStacks {
+		options[i] = s.Name()
+	}
+
 	var selected string
 	prompt := &survey.Select{
 		Message: "Select stack:",
-		Options: stackOptions,
+		Options: options,
 	}
 
 	if err := survey.AskOne(prompt, &selected); err != nil {
@@ -65,7 +56,14 @@ func PromptStackSelection() (StackType, error) {
 		return "", err
 	}
 
-	return stackMapping[selected], nil
+	// Find stack ID from selected name
+	for _, s := range allStacks {
+		if s.Name() == selected {
+			return StackType(s.ID()), nil
+		}
+	}
+
+	return "", nil
 }
 
 // PromptFeatureSelection prompts the user to select features
@@ -93,16 +91,13 @@ func PromptFeatureSelection() ([]Feature, error) {
 	return features, nil
 }
 
-// ParseStackType converts a string to StackType
+// ParseStackType converts a string to StackType using the registry
 func ParseStackType(s string) (StackType, bool) {
-	switch s {
-	case "web":
-		return StackWeb, true
-	case "mobile":
-		return StackMobile, true
-	default:
-		return "", false
+	_, ok := stacks.Get(s)
+	if ok {
+		return StackType(s), true
 	}
+	return "", false
 }
 
 // ParseFeatures converts a slice of strings to Features
@@ -136,14 +131,11 @@ func FormatFeatures(features []Feature) string {
 	return result
 }
 
-// StackDisplayName returns the display name for a stack type
+// StackDisplayName returns the display name for a stack type using the registry
 func StackDisplayName(st StackType) string {
-	switch st {
-	case StackWeb:
-		return "Web (Next.js + Go + Supabase)"
-	case StackMobile:
-		return "Mobile (Expo + Go + Supabase)"
-	default:
-		return string(st)
+	s, ok := stacks.Get(string(st))
+	if ok {
+		return s.Name()
 	}
+	return string(st)
 }
