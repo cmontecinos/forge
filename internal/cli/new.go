@@ -31,13 +31,21 @@ var newCmd = &cobra.Command{
 The project name must:
 - Start with a letter
 - Contain only letters, numbers, hyphens, and underscores
-- Be at most 64 characters
-
-Examples:
+- Be at most 64 characters`,
+	Example: `  # Interactive mode - prompts for stack and features
   forge new my-app
+
+  # Specify stack, prompt for features
   forge new my-app --stack web
+
+  # Fully non-interactive
   forge new my-app --stack mobile --features auth,database,api
-  forge new my-app -o /path/to/output`,
+
+  # Custom output directory
+  forge new my-app -o /path/to/projects
+
+  # Overwrite existing directory
+  forge new my-app --force`,
 	Args: cobra.ExactArgs(1),
 	RunE: runNew,
 }
