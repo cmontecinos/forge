@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/bigbytes/forge/internal/templates"
 	"github.com/spf13/cobra"
@@ -61,6 +62,7 @@ func init() {
 }
 
 func runNew(cmd *cobra.Command, args []string) error {
+	startTime := time.Now()
 	projectName := args[0]
 
 	// Validate project name
@@ -147,8 +149,9 @@ func runNew(cmd *cobra.Command, args []string) error {
 		Warn("Could not remove .git directory")
 	}
 
+	duration := time.Since(startTime).Seconds()
 	Success("Project created successfully!")
-	fmt.Println()
+	PrintNextSteps(projectName, stack, duration)
 
 	return nil
 }

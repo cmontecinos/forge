@@ -48,3 +48,21 @@ func PrintSummary(projectName string, stack StackType, features []Feature, outpu
 	fmt.Printf("  Output:   %s\n", outputDir)
 	fmt.Println()
 }
+
+// PrintNextSteps prints the next steps after project creation
+func PrintNextSteps(projectName string, stack StackType, duration float64) {
+	Header("Next steps")
+	fmt.Printf("  cd %s\n", projectName)
+
+	switch stack {
+	case StackWeb:
+		fmt.Println("  npm install && npm run dev")
+	case StackMobile:
+		fmt.Println("  npm install && npx expo start")
+	}
+
+	fmt.Println()
+	if duration > 0 {
+		fmt.Printf("Created in %.1fs\n", duration)
+	}
+}
