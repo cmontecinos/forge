@@ -5,34 +5,15 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/AlecAivazis/survey/v2/terminal"
+	"github.com/bigbytes/forge/internal/features"
 	"github.com/bigbytes/forge/internal/stacks"
 )
 
 // StackType represents the type of project stack (maps to stack ID)
 type StackType string
 
-// Feature represents optional features that can be added to a project
-type Feature string
-
-const (
-	FeatureAuth     Feature = "auth"
-	FeatureDatabase Feature = "database"
-	FeatureAPI      Feature = "api"
-)
-
-// featureOptions for multi-select display
-var featureOptions = []string{
-	"Auth - Login/registro via backend",
-	"Database - Conexión Go-Supabase",
-	"API - Router, middlewares, handlers",
-}
-
-// featureMapping maps display names to Feature values
-var featureMapping = map[string]Feature{
-	"Auth - Login/registro via backend":   FeatureAuth,
-	"Database - Conexión Go-Supabase":     FeatureDatabase,
-	"API - Router, middlewares, handlers": FeatureAPI,
-}
+// Feature represents optional features that can be added to a project (feature ID)
+type Feature = string
 
 // PromptStackSelection prompts the user to select a stack type
 func PromptStackSelection() (StackType, error) {
@@ -68,10 +49,17 @@ func PromptStackSelection() (StackType, error) {
 
 // PromptFeatureSelection prompts the user to select features
 func PromptFeatureSelection() ([]Feature, error) {
+	// Build options dynamically from registry
+	allFeatures := features.All()
+	options := make([]string, len(allFeatures))
+	for i, f := range allFeatures {
+		options[i] = f.Name()
+	}
+
 	var selected []string
 	prompt := &survey.MultiSelect{
 		Message: "Select features (space to toggle, enter to confirm):",
-		Options: featureOptions,
+		Options: options,
 	}
 
 	if err := survey.AskOne(prompt, &selected); err != nil {
@@ -81,14 +69,18 @@ func PromptFeatureSelection() ([]Feature, error) {
 		return nil, err
 	}
 
-	features := make([]Feature, 0, len(selected))
-	for _, s := range selected {
-		if f, ok := featureMapping[s]; ok {
-			features = append(features, f)
+	// Convert selected names to feature IDs
+	result := make([]Feature, 0, len(selected))
+	for _, name := range selected {
+		for _, f := range allFeatures {
+			if f.Name() == name {
+				result = append(result, f.ID())
+				break
+			}
 		}
 	}
 
-	return features, nil
+	return result, nil
 }
 
 // ParseStackType converts a string to StackType using the registry
@@ -100,20 +92,15 @@ func ParseStackType(s string) (StackType, bool) {
 	return "", false
 }
 
-// ParseFeatures converts a slice of strings to Features
+// ParseFeatures converts a slice of strings to Features using the registry
 func ParseFeatures(strs []string) []Feature {
-	features := make([]Feature, 0, len(strs))
+	result := make([]Feature, 0, len(strs))
 	for _, s := range strs {
-		switch s {
-		case "auth":
-			features = append(features, FeatureAuth)
-		case "database":
-			features = append(features, FeatureDatabase)
-		case "api":
-			features = append(features, FeatureAPI)
+		if _, ok := features.Get(s); ok {
+			result = append(result, s)
 		}
 	}
-	return features
+	return result
 }
 
 // FormatFeatures returns a human-readable list of features

@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/bigbytes/forge/internal/features"
 	"github.com/bigbytes/forge/internal/stacks"
 	"github.com/bigbytes/forge/internal/templates"
 	"github.com/spf13/cobra"
@@ -189,10 +190,11 @@ func getFeaturesSelection(cmd *cobra.Command) ([]Feature, error) {
 				cleanStrs = append(cleanStrs, f)
 			}
 		}
-		// Validate all features are recognized
+		// Validate all features are recognized using registry
 		for _, f := range cleanStrs {
-			if f != "auth" && f != "database" && f != "api" {
-				return nil, fmt.Errorf("invalid feature: %s (must be auth, database, or api)", f)
+			if _, ok := features.Get(f); !ok {
+				ids := features.IDs()
+				return nil, fmt.Errorf("invalid feature: %s (must be one of: %s)", f, strings.Join(ids, ", "))
 			}
 		}
 		return ParseFeatures(cleanStrs), nil
