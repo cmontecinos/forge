@@ -11,8 +11,10 @@ import (
 )
 
 var (
-	outputDir string
-	force     bool
+	outputDir    string
+	force        bool
+	stackFlag    string
+	featuresFlag string
 )
 
 // projectNameRegex validates project names:
@@ -45,6 +47,8 @@ func init() {
 
 	newCmd.Flags().StringVarP(&outputDir, "output", "o", "", "Output directory for the new project")
 	newCmd.Flags().BoolVarP(&force, "force", "f", false, "Overwrite existing directory")
+	newCmd.Flags().StringVarP(&stackFlag, "stack", "s", "", "Stack type (web or mobile)")
+	newCmd.Flags().StringVar(&featuresFlag, "features", "", "Features to include (comma-separated: auth,database,api)")
 }
 
 func runNew(cmd *cobra.Command, args []string) error {
@@ -66,11 +70,67 @@ func runNew(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	// Print confirmation (placeholder for now)
-	fmt.Printf("Creating project: %s\n", projectName)
+	// Get stack selection (flag or prompt)
+	stack, err := getStackSelection(cmd)
+	if err != nil {
+		return err
+	}
+
+	// Get features selection (flag or prompt)
+	features, err := getFeaturesSelection(cmd)
+	if err != nil {
+		return err
+	}
+
+	// Print summary
+	fmt.Printf("\nCreating project: %s\n", projectName)
+	fmt.Printf("Stack: %s\n", StackDisplayName(stack))
+	fmt.Printf("Features: %s\n", FormatFeatures(features))
 	fmt.Printf("Output: %s\n", targetDir)
 
 	return nil
+}
+
+func getStackSelection(cmd *cobra.Command) (StackType, error) {
+	// If flag provided, use it
+	if cmd.Flags().Changed("stack") {
+		st, ok := ParseStackType(stackFlag)
+		if !ok {
+			return "", fmt.Errorf("invalid stack type: %s (must be 'web' or 'mobile')", stackFlag)
+		}
+		return st, nil
+	}
+
+	// Otherwise, prompt
+	return PromptStackSelection()
+}
+
+func getFeaturesSelection(cmd *cobra.Command) ([]Feature, error) {
+	// If flag was explicitly set (even to empty), use it
+	if cmd.Flags().Changed("features") {
+		if featuresFlag == "" {
+			return []Feature{}, nil
+		}
+		featureStrs := strings.Split(featuresFlag, ",")
+		// Trim whitespace and filter empty strings
+		var cleanStrs []string
+		for _, f := range featureStrs {
+			f = strings.TrimSpace(f)
+			if f != "" {
+				cleanStrs = append(cleanStrs, f)
+			}
+		}
+		// Validate all features are recognized
+		for _, f := range cleanStrs {
+			if f != "auth" && f != "database" && f != "api" {
+				return nil, fmt.Errorf("invalid feature: %s (must be auth, database, or api)", f)
+			}
+		}
+		return ParseFeatures(cleanStrs), nil
+	}
+
+	// Otherwise, prompt
+	return PromptFeatureSelection()
 }
 
 func validateProjectName(name string) error {
