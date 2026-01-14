@@ -14,7 +14,7 @@ None
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: CLI Foundation** - Estructura base del CLI, parsing de argumentos, flujo interactivo
+- [x] **Phase 1: CLI Foundation** - Estructura base del CLI, parsing de argumentos, flujo interactivo
 - [ ] **Phase 2: Template Engine** - Sistema para clonar y procesar templates desde Git repos
 - [ ] **Phase 3: Stack Registry** - Sistema modular de registro de stacks con detección dinámica
 - [ ] **Phase 4: Feature Registry** - Sistema modular de features componibles entre stacks
@@ -160,7 +160,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. CLI Foundation | 2/5 | In progress | - |
+| 1. CLI Foundation | 5/5 | Complete | 2026-01-14 |
 | 2. Template Engine | 0/TBD | Not started | - |
 | 3. Stack Registry | 0/TBD | Not started | - |
 | 4. Feature Registry | 0/TBD | Not started | - |
