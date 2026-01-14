@@ -160,7 +160,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. CLI Foundation | 0/TBD | Not started | - |
+| 1. CLI Foundation | 1/5 | In progress | - |
 | 2. Template Engine | 0/TBD | Not started | - |
 | 3. Stack Registry | 0/TBD | Not started | - |
 | 4. Feature Registry | 0/TBD | Not started | - |
