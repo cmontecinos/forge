@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/bigbytes/forge/internal/cli"
 
 func main() {
-	fmt.Println("forge cli")
+	cli.Execute()
 }
