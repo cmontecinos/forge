@@ -24,14 +24,14 @@ func CloneTemplate(repoURL, destDir string) error {
 		Depth: 1, // Shallow clone for speed
 	})
 	if err != nil {
-		return err
+		return WrapTemplateError("clone", err)
 	}
 	return nil
 }
 
 // ProcessTemplates walks the directory and processes all files as templates
 func ProcessTemplates(dir string, data TemplateData) error {
-	return filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -81,12 +81,19 @@ func ProcessTemplates(dir string, data TemplateData) error {
 
 		return nil
 	})
+	if err != nil {
+		return WrapTemplateError("process", err)
+	}
+	return nil
 }
 
 // CleanupGitDir removes the .git directory after cloning
 func CleanupGitDir(dir string) error {
 	gitDir := filepath.Join(dir, ".git")
-	return os.RemoveAll(gitDir)
+	if err := os.RemoveAll(gitDir); err != nil {
+		return WrapTemplateError("cleanup", err)
+	}
+	return nil
 }
 
 // isBinaryFile checks if content contains null bytes (indicating binary)
