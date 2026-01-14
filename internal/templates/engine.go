@@ -115,3 +115,27 @@ func (d TemplateData) HasFeature(feature string) bool {
 	}
 	return false
 }
+
+// CreateProject orchestrates the full project creation workflow:
+// Clone → Process → Cleanup
+func CreateProject(config TemplateConfig, data TemplateData, destDir string) error {
+	// Step 1: Clone template repository
+	if err := CloneTemplate(config.RepoURL, destDir); err != nil {
+		return err
+	}
+
+	// Step 2: Process template files with variable substitution
+	if err := ProcessTemplates(destDir, data); err != nil {
+		// Keep files for debugging, but return error
+		return err
+	}
+
+	// Step 3: Remove .git directory (we don't want template's git history)
+	if err := CleanupGitDir(destDir); err != nil {
+		// Non-fatal: project is usable even with .git dir
+		// But still return error so caller knows
+		return err
+	}
+
+	return nil
+}

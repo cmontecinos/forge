@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/bigbytes/forge/internal/templates"
 	"github.com/spf13/cobra"
 )
 
@@ -100,6 +101,54 @@ func runNew(cmd *cobra.Command, args []string) error {
 
 	// Print summary
 	PrintSummary(projectName, stack, features, targetDir)
+
+	// If force flag is set and directory exists, remove it first
+	if force {
+		if _, err := os.Stat(targetDir); err == nil {
+			Info("Removing existing directory...")
+			if err := os.RemoveAll(targetDir); err != nil {
+				return fmt.Errorf("failed to remove existing directory: %w", err)
+			}
+		}
+	}
+
+	// Get template configuration for selected stack
+	config := templates.GetConfigForStack(string(stack))
+
+	// Convert features to string slice for TemplateData
+	featureStrings := make([]string, len(features))
+	for i, f := range features {
+		featureStrings[i] = string(f)
+	}
+
+	// Prepare template data
+	data := templates.TemplateData{
+		ProjectName: projectName,
+		StackType:   string(stack),
+		Features:    featureStrings,
+	}
+
+	// Create project using template engine
+	Info("Cloning template...")
+	if err := templates.CloneTemplate(config.RepoURL, targetDir); err != nil {
+		Error("Failed to clone template")
+		return err
+	}
+
+	Info("Processing templates...")
+	if err := templates.ProcessTemplates(targetDir, data); err != nil {
+		Error("Failed to process templates")
+		return err
+	}
+
+	Info("Cleaning up...")
+	if err := templates.CleanupGitDir(targetDir); err != nil {
+		// Non-fatal but worth mentioning
+		Warn("Could not remove .git directory")
+	}
+
+	Success("Project created successfully!")
+	fmt.Println()
 
 	return nil
 }
