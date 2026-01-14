@@ -1,7 +1,10 @@
 package cli
 
 import (
+	"errors"
+
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/AlecAivazis/survey/v2/terminal"
 )
 
 // StackType represents the type of project stack
@@ -56,6 +59,9 @@ func PromptStackSelection() (StackType, error) {
 	}
 
 	if err := survey.AskOne(prompt, &selected); err != nil {
+		if errors.Is(err, terminal.InterruptErr) {
+			return "", &UserAbortError{}
+		}
 		return "", err
 	}
 
@@ -71,6 +77,9 @@ func PromptFeatureSelection() ([]Feature, error) {
 	}
 
 	if err := survey.AskOne(prompt, &selected); err != nil {
+		if errors.Is(err, terminal.InterruptErr) {
+			return nil, &UserAbortError{}
+		}
 		return nil, err
 	}
 

@@ -81,20 +81,25 @@ func runNew(cmd *cobra.Command, args []string) error {
 	// Get stack selection (flag or prompt)
 	stack, err := getStackSelection(cmd)
 	if err != nil {
+		if IsUserAbort(err) {
+			fmt.Println("\nAborted.")
+			return nil
+		}
 		return err
 	}
 
 	// Get features selection (flag or prompt)
 	features, err := getFeaturesSelection(cmd)
 	if err != nil {
+		if IsUserAbort(err) {
+			fmt.Println("\nAborted.")
+			return nil
+		}
 		return err
 	}
 
 	// Print summary
-	fmt.Printf("\nCreating project: %s\n", projectName)
-	fmt.Printf("Stack: %s\n", StackDisplayName(stack))
-	fmt.Printf("Features: %s\n", FormatFeatures(features))
-	fmt.Printf("Output: %s\n", targetDir)
+	PrintSummary(projectName, stack, features, targetDir)
 
 	return nil
 }
