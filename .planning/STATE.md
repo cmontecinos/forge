@@ -10,24 +10,24 @@ See: .planning/PROJECT.md (updated 2026-01-14)
 ## Current Position
 
 Phase: 1 of 10 (CLI Foundation)
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-01-14 — Completed 01-01-PLAN.md
+Last activity: 2026-01-14 — Completed 01-02-PLAN.md
 
-Progress: █░░░░░░░░░ 2%
+Progress: █░░░░░░░░░ 4%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
+- Total plans completed: 2
 - Average duration: 2 min
-- Total execution time: 0.03 hours
+- Total execution time: 0.07 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. CLI Foundation | 1/5 | 2 min | 2 min |
+| 1. CLI Foundation | 2/5 | 4 min | 2 min |
 
 **Recent Trend:**
 - Last 5 plans: 2 min
@@ -42,6 +42,8 @@ Recent decisions affecting current work:
 
 - [01-01]: Module path github.com/bigbytes/forge
 - [01-01]: Use internal/ for all private packages
+- [01-02]: Commands as separate files in internal/cli/
+- [01-02]: Version settable via ldflags at build time
 
 ### Deferred Issues
 
@@ -54,5 +56,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-14
-Stopped at: Completed 01-01-PLAN.md
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
