@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-14)
 
 **Core value:** Mis configuraciones exactas, no genéricas — genera proyectos con MI stack preferido, listos para agregar funcionalidad, sin configuración manual.
-**Current focus:** Phase 5 — Web Stack Base
+**Current focus:** Phase 6 — Mobile Stack Base
 
 ## Current Position
 
-Phase: 5 of 10 (Web Stack Base)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-01-14 — Completed 05-01-PLAN.md
+Phase: 6 of 10 (Mobile Stack Base)
+Plan: Ready for planning
+Status: Phase 5 complete
+Last activity: 2026-01-14 — Completed 05-02-PLAN.md (Next.js frontend)
 
-Progress: ████░░░░░░ 45%
+Progress: █████░░░░░ 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
-- Average duration: 4.2 min
-- Total execution time: 0.7 hours
+- Total plans completed: 11
+- Average duration: 4.5 min
+- Total execution time: 0.8 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: ████░░░░░░ 45%
 | 2. Template Engine | 2/2 | 7 min | 3.5 min |
 | 3. Stack Registry | 1/1 | 3 min | 3 min |
 | 4. Feature Registry | 1/1 | 4 min | 4 min |
-| 5. Web Stack Base | 1/2 | 15 min | 15 min |
+| 5. Web Stack Base | 2/2 | 23 min | 11.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 3, 4, 3, 4, 15 min
-- Trend: ↑ (template creation takes longer)
+- Last 5 plans: 3, 4, 15, 8 min
+- Trend: → (template creation takes longer, stabilizing)
 
 ## Accumulated Context
 
@@ -59,6 +59,10 @@ Recent decisions affecting current work:
 - [04-01]: Feature type is simple string alias for CLI compatibility
 - [05-01]: Template repo at github.com/cmontecinos/forge
 - [05-01]: Echo v4 for backend HTTP framework
+- [05-02]: Next.js 14 with App Router (not Pages Router)
+- [05-02]: Tailwind CSS for styling
+- [05-02]: API client pattern with NEXT_PUBLIC_API_URL
+- [05-02]: concurrently for running both servers in dev
 
 ### Deferred Issues
 
@@ -71,6 +75,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-14
-Stopped at: Completed 05-01-PLAN.md (Go backend template)
+Stopped at: Completed Phase 5 (Web Stack Base) - both plans done
 Resume file: None
-Next: 05-02-PLAN.md (Next.js frontend)
+Next: Phase 6 - Mobile Stack Base (planning)
