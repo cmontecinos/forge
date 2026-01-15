@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-14)
 ## Current Position
 
 Phase: 7 of 10 (Auth Feature)
-Plan: Ready for planning
-Status: Phase 6 complete
-Last activity: 2026-01-14 — Completed 06-02-PLAN.md (Mobile monorepo + CLI)
+Plan: 1 of 3 complete
+Status: Executing Phase 7
+Last activity: 2026-01-15 — Completed 07-01-PLAN.md (Backend auth endpoints)
 
-Progress: ██████░░░░ 60%
+Progress: ██████░░░░ 63%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
-- Average duration: 4.5 min
-- Total execution time: 1.0 hours
+- Total plans completed: 14
+- Average duration: 4.6 min
+- Total execution time: 1.1 hours
 
 **By Phase:**
 
@@ -33,10 +33,11 @@ Progress: ██████░░░░ 60%
 | 4. Feature Registry | 1/1 | 4 min | 4 min |
 | 5. Web Stack Base | 2/2 | 23 min | 11.5 min |
 | 6. Mobile Stack Base | 2/2 | 11 min | 5.5 min |
+| 7. Auth Feature | 1/3 | 6 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 15, 8, 5, 6 min
-- Trend: → (template creation stabilizing)
+- Last 5 plans: 8, 5, 6, 6 min
+- Trend: → (consistent execution)
 
 ## Accumulated Context
 
@@ -69,6 +70,9 @@ Recent decisions affecting current work:
 - [06-01]: Mobile template in separate repo (forge-mobile)
 - [06-02]: Mobile template URL at github.com/cmontecinos/forge-mobile
 - [06-02]: Both stacks share identical backend structure
+- [07-01]: HTTP REST API for Supabase Auth (not supabase-go library)
+- [07-01]: Separate middleware package at internal/middleware/
+- [07-01]: golang-jwt/jwt/v5 for JWT validation
 
 ### Deferred Issues
 
@@ -80,7 +84,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-14
-Stopped at: Completed Phase 6 (Mobile Stack Base) - both plans done
+Last session: 2026-01-15
+Stopped at: Completed 07-01-PLAN.md (Backend auth endpoints)
 Resume file: None
-Next: Phase 7 - Auth Feature (planning)
+Next: Execute 07-02-PLAN.md (Web frontend auth)

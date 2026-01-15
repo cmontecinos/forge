@@ -166,7 +166,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 4. Feature Registry | 1/1 | Complete | 2026-01-14 |
 | 5. Web Stack Base | 2/2 | Complete | 2026-01-14 |
 | 6. Mobile Stack Base | 2/2 | Complete | 2026-01-14 |
-| 7. Auth Feature | 0/TBD | Not started | - |
+| 7. Auth Feature | 1/3 | In Progress | - |
 | 8. Database Feature | 0/TBD | Not started | - |
 | 9. API Feature | 0/TBD | Not started | - |
 | 10. Integration & Polish | 0/TBD | Not started | - |
