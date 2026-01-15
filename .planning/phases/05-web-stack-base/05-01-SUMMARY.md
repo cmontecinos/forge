@@ -1,93 +1,128 @@
-# Plan Summary: 05-01 Go Backend Template
+---
+phase: 05-web-stack-base
+plan: 01
+subsystem: templates
+tags: [go, echo, template, monorepo]
 
-## Outcome: PARTIAL - BLOCKER
+# Dependency graph
+requires:
+  - phase: 04-01
+    provides: Feature registry with self-registration pattern
+  - phase: 03-01
+    provides: Stack registry with TemplateConfig pattern
+provides:
+  - Go backend template with Echo server
+  - golang-standards/project-layout structure
+  - Template variable substitution working
+  - Health check endpoint at /health
+affects: [phase-5-02, phase-6, phase-7, phase-8, phase-9]
 
-The Go backend template has been created and verified locally, but requires manual GitHub push due to gh CLI authentication requirement.
+# Tech tracking
+tech-stack:
+  added: []
+  patterns: [Echo server setup, environment config loading, project-layout structure]
 
-## Tasks Completed
+key-files:
+  created: [backend/cmd/server/main.go, backend/internal/config/config.go, backend/internal/server/server.go, backend/internal/server/routes.go]
+  modified: [internal/stacks/web.go]
 
-### Task 1: Create template repository with Go backend structure
-**Status:** Complete
+key-decisions:
+  - "Template repo at github.com/cmontecinos/forge instead of bigbytes/forge-template-web"
+  - "Echo v4 for HTTP framework"
+  - "godotenv for environment loading"
 
-Created template at `/tmp/forge-template-web/` with:
+patterns-established:
+  - "Template files use {{.ProjectName}} for variable substitution"
+  - "Backend follows cmd/internal structure"
+
+issues-created: []
+
+# Metrics
+duration: 15min
+completed: 2026-01-14
+---
+
+# Phase 5 Plan 01: Go Backend Template Summary
+
+**Go backend template with Echo server, health check endpoint, and environment config - deployed to github.com/cmontecinos/forge**
+
+## Performance
+
+- **Duration:** 15 min
+- **Started:** 2026-01-14
+- **Completed:** 2026-01-14
+- **Tasks:** 3
+- **Files created:** 9 (template) + 1 (CLI update)
+
+## Accomplishments
+
+- Created Go backend template at github.com/cmontecinos/forge
+- Echo server with Logger, Recover, CORS middleware
+- Health check endpoint at GET /health
+- Environment config loading (PORT, SUPABASE_URL, SUPABASE_KEY)
+- golang-standards/project-layout structure (cmd/, internal/)
+- Template variables ({{.ProjectName}}) substituted correctly by forge
+
+## Task Commits
+
+Each task was committed atomically:
+
+1. **Task 1: Create template structure** - In template repo `09dc2db`
+2. **Task 2: Push to GitHub** - Template at github.com/cmontecinos/forge
+3. **Task 3: Verify and update CLI** - `9b771c1` (feat)
+
+## Files Created/Modified
+
+**Template Repository (github.com/cmontecinos/forge):**
 - `backend/cmd/server/main.go` - Entry point with config loading
-- `backend/internal/config/config.go` - Environment configuration (PORT, SUPABASE_URL, SUPABASE_KEY)
-- `backend/internal/server/server.go` - Echo server with Logger, Recover, CORS middleware
-- `backend/internal/server/routes.go` - Health check endpoint and API v1 group
-- `backend/go.mod` - Module with Echo and godotenv dependencies
-- `backend/go.sum` - Dependency lock file
+- `backend/internal/config/config.go` - Environment configuration
+- `backend/internal/server/server.go` - Echo server setup with middleware
+- `backend/internal/server/routes.go` - Health check and API routes
+- `backend/go.mod` - Module with Echo and godotenv
+- `backend/go.sum` - Dependency lock
 - `backend/.env.example` - Environment template
-- `README.md` - Project documentation with template variables
-- `.gitignore` - Go and environment patterns
+- `README.md` - Project documentation
+- `.gitignore` - Go patterns
 
-All files use `{{.ProjectName}}` template variable for substitution.
-
-### Task 2: Initialize Git repository and push to GitHub
-**Status:** Partial (BLOCKER)
-
-Completed:
-- Git repository initialized at `/tmp/forge-template-web/`
-- Initial commit created: `09dc2db Initial commit: Go backend template with Echo`
-- Remote set to `git@github.com:bigbytes/forge-template-web.git`
-
-Blocked:
-- GitHub CLI (gh) not authenticated
-- Cannot create repository or push without authentication
-- Device flow auth attempted but requires user interaction
-
-**Manual steps required:**
-```bash
-# Authenticate gh CLI
-gh auth login
-
-# Create repo and push
-cd /tmp/forge-template-web
-gh repo create bigbytes/forge-template-web --public \
-  --description "Web stack template for forge CLI (Go + Echo + Supabase)" \
-  --source=. --push
-```
-
-### Task 3: Verify forge can clone and process template
-**Status:** Complete (local verification)
-
-Verified using local file:// URL:
-- Forge successfully cloned template
-- Template variables substituted correctly:
-  - `{{.ProjectName}}` → `test-project` in all files
-  - Module path: `github.com/test-project/backend`
-- Directory structure follows golang-standards/project-layout
-- Test project created in 0.1s
-
-## Files Changed
-
-Template files (external repo):
-- `/tmp/forge-template-web/backend/cmd/server/main.go`
-- `/tmp/forge-template-web/backend/internal/config/config.go`
-- `/tmp/forge-template-web/backend/internal/server/server.go`
-- `/tmp/forge-template-web/backend/internal/server/routes.go`
-- `/tmp/forge-template-web/backend/go.mod`
-- `/tmp/forge-template-web/backend/go.sum`
-- `/tmp/forge-template-web/backend/.env.example`
-- `/tmp/forge-template-web/README.md`
-- `/tmp/forge-template-web/.gitignore`
+**Forge CLI:**
+- `internal/stacks/web.go` - Updated template URL
 
 ## Decisions Made
 
-| Decision | Rationale |
-|----------|-----------|
-| Used godotenv for .env loading | Simple, widely used, no complex config framework needed |
-| Created go.sum manually | Ensures reproducible builds without running go mod tidy |
-| Verified with file:// URL | Allowed local testing without GitHub push |
+- Used github.com/cmontecinos/forge instead of bigbytes/forge-template-web (user's GitHub org)
+- Echo v4.11.4 for HTTP framework (consistent with PROJECT.md)
+- godotenv for simple environment loading
+- Template variables use Go text/template syntax
 
-## Next Steps
+## Deviations from Plan
 
-1. **REQUIRED:** Complete manual GitHub push (see Task 2 instructions above)
-2. After GitHub push, verify with: `gh repo view bigbytes/forge-template-web`
-3. Test end-to-end: `forge new verify-test --stack web --features ""`
-4. Proceed to 05-02-PLAN.md for Next.js frontend template
+**1. [Deviation] Template repo URL changed**
+- **Plan specified:** github.com/bigbytes/forge-template-web
+- **Actual:** github.com/cmontecinos/forge
+- **Reason:** User created repo under their account
+- **Impact:** None - URL updated in web.go
 
-## Duration
+**2. [Auth Gate] GitHub CLI authentication required**
+- **Found during:** Task 2 (push to GitHub)
+- **Issue:** gh CLI not authenticated, automated auth timed out
+- **Resolution:** User created repo manually, pushed via SSH
+- **Impact:** Minor delay, no functionality impact
 
-- Start: 22:17
-- End: 22:35
-- Total: 18 min (includes waiting for gh auth)
+---
+
+**Total deviations:** 1 URL change, 1 auth gate (expected for first-time setup)
+**Impact on plan:** None. Template fully functional.
+
+## Issues Encountered
+
+None
+
+## Next Phase Readiness
+
+- Go backend template complete and verified
+- Ready for 05-02-PLAN.md (Next.js frontend)
+- Template clones in 0.6s and variables substitute correctly
+
+---
+*Phase: 05-web-stack-base*
+*Completed: 2026-01-14*
