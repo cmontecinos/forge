@@ -5,7 +5,7 @@ import (
 )
 
 // MobileTemplateURL is the Git repo URL for mobile stack template
-const MobileTemplateURL = "https://github.com/bigbytes/forge-template-mobile"
+const MobileTemplateURL = "https://github.com/cmontecinos/forge-mobile"
 
 // mobileStack implements the Stack interface for mobile projects
 type mobileStack struct{}
