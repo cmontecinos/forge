@@ -5,7 +5,7 @@ import (
 )
 
 // WebTemplateURL is the Git repo URL for web stack template
-const WebTemplateURL = "https://github.com/bigbytes/forge-template-web"
+const WebTemplateURL = "https://github.com/cmontecinos/forge"
 
 // webStack implements the Stack interface for web projects
 type webStack struct{}
