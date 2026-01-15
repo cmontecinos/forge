@@ -19,7 +19,7 @@ None
 - [x] **Phase 3: Stack Registry** - Sistema modular de registro de stacks con detección dinámica
 - [x] **Phase 4: Feature Registry** - Sistema modular de features componibles entre stacks
 - [x] **Phase 5: Web Stack Base** - Template base Next.js + Go + Supabase (monorepo)
-- [ ] **Phase 6: Mobile Stack Base** - Template base Expo + Go + Supabase (monorepo)
+- [x] **Phase 6: Mobile Stack Base** - Template base Expo + Go + Supabase (monorepo)
 - [ ] **Phase 7: Auth Feature** - Módulo de autenticación via backend Go
 - [ ] **Phase 8: Database Feature** - Módulo de conexión Go-Supabase y modelos base
 - [ ] **Phase 9: API Feature** - Módulo de estructura API con Echo
@@ -165,7 +165,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 3. Stack Registry | 1/1 | Complete | 2026-01-14 |
 | 4. Feature Registry | 1/1 | Complete | 2026-01-14 |
 | 5. Web Stack Base | 2/2 | Complete | 2026-01-14 |
-| 6. Mobile Stack Base | 1/2 | In progress | - |
+| 6. Mobile Stack Base | 2/2 | Complete | 2026-01-14 |
 | 7. Auth Feature | 0/TBD | Not started | - |
 | 8. Database Feature | 0/TBD | Not started | - |
 | 9. API Feature | 0/TBD | Not started | - |
