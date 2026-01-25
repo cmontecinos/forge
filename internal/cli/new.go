@@ -15,10 +15,11 @@ import (
 )
 
 var (
-	outputDir    string
-	force        bool
-	stackFlag    string
+	outputDir   string
+	force       bool
+	stackFlag   string
 	featuresFlag string
+	skipInstall bool
 )
 
 // projectNameRegex validates project names:
@@ -61,6 +62,7 @@ func init() {
 	newCmd.Flags().BoolVarP(&force, "force", "f", false, "Overwrite existing directory")
 	newCmd.Flags().StringVarP(&stackFlag, "stack", "s", "", "Stack type (web or mobile)")
 	newCmd.Flags().StringVar(&featuresFlag, "features", "", "Features to include (comma-separated: auth,database,api)")
+	newCmd.Flags().BoolVar(&skipInstall, "skip-install", false, "Skip automatic dependency installation")
 }
 
 func runNew(cmd *cobra.Command, args []string) error {
@@ -152,9 +154,15 @@ func runNew(cmd *cobra.Command, args []string) error {
 		Warn("Could not remove .git directory")
 	}
 
+	// Run post-create hooks (dependency installation)
+	var postCreateResult PostCreateResult
+	if !skipInstall {
+		postCreateResult = RunPostCreate(targetDir, string(stack))
+	}
+
 	duration := time.Since(startTime).Seconds()
 	Success("Project created successfully!")
-	PrintNextSteps(projectName, stack, duration)
+	PrintNextSteps(projectName, stack, duration, postCreateResult, skipInstall)
 
 	return nil
 }

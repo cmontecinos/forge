@@ -50,20 +50,41 @@ func PrintSummary(projectName string, stack StackType, features []Feature, outpu
 }
 
 // PrintNextSteps prints the next steps after project creation
-func PrintNextSteps(projectName string, stack StackType, duration float64) {
+func PrintNextSteps(projectName string, stack StackType, duration float64, postCreate PostCreateResult, skippedInstall bool) {
 	Header("Next steps")
 	fmt.Printf("  cd %s\n", projectName)
+
+	// Show install steps only if not already done
+	depsInstalled := postCreate.FrontendInstalled && postCreate.BackendInstalled
 
 	// Stack-specific next steps based on stack ID
 	switch string(stack) {
 	case "web":
-		fmt.Println("  npm install && npm run dev")
+		if depsInstalled {
+			fmt.Println("  npm run dev")
+		} else if skippedInstall {
+			fmt.Println("  npm install && npm run dev")
+		} else {
+			fmt.Println("  npm install && npm run dev")
+		}
 	case "mobile":
-		fmt.Println("  npm install && npx expo start")
+		if depsInstalled {
+			fmt.Println("  npx expo start")
+		} else if skippedInstall {
+			fmt.Println("  npm install && npx expo start")
+		} else {
+			fmt.Println("  npm install && npx expo start")
+		}
 	}
 
 	fmt.Println()
+
+	// Show timing breakdown
 	if duration > 0 {
-		fmt.Printf("Created in %.1fs\n", duration)
+		if depsInstalled && postCreate.Duration.Seconds() > 0 {
+			fmt.Printf("Created in %.1fs (deps: %.1fs)\n", duration, postCreate.Duration.Seconds())
+		} else {
+			fmt.Printf("Created in %.1fs\n", duration)
+		}
 	}
 }
