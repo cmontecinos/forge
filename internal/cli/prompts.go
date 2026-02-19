@@ -47,10 +47,10 @@ func PromptStackSelection() (StackType, error) {
 	return "", nil
 }
 
-// PromptFeatureSelection prompts the user to select features
-func PromptFeatureSelection() ([]Feature, error) {
-	// Build options dynamically from registry
-	allFeatures := features.All()
+// PromptFeatureSelection prompts the user to select features compatible with the given stack
+func PromptFeatureSelection(stackType string) ([]Feature, error) {
+	// Build options dynamically from registry, filtered by stack compatibility
+	allFeatures := features.ForStack(stackType)
 	options := make([]string, len(allFeatures))
 	for i, f := range allFeatures {
 		options[i] = f.Name()

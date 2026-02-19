@@ -19,5 +19,5 @@ func (f *authFeature) Description() string {
 }
 
 func (f *authFeature) CompatibleStacks() []string {
-	return nil // Compatible with all stacks
+	return []string{"web", "mobile", "web-fullstack"}
 }

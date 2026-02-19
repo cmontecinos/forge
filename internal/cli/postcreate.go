@@ -54,6 +54,8 @@ func getFrontendDir(targetDir, stackType string) string {
 		dir = filepath.Join(targetDir, "frontend")
 	case "mobile":
 		dir = filepath.Join(targetDir, "mobile")
+	case "web-fullstack":
+		dir = targetDir
 	default:
 		return ""
 	}

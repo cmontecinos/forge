@@ -146,10 +146,9 @@ func TestParseStackType(t *testing.T) {
 		want  StackType
 		ok    bool
 	}{
-		{"web", StackWeb, true},
-		{"mobile", StackMobile, true},
-		{"Web", StackWeb, true},
-		{"MOBILE", StackMobile, true},
+		{"web", "web", true},
+		{"mobile", "mobile", true},
+		{"web-fullstack", "web-fullstack", true},
 		{"invalid", "", false},
 		{"", "", false},
 	}

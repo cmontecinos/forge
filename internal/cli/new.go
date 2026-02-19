@@ -96,7 +96,7 @@ func runNew(cmd *cobra.Command, args []string) error {
 	}
 
 	// Get features selection (flag or prompt)
-	features, err := getFeaturesSelection(cmd)
+	features, err := getFeaturesSelection(cmd, string(stack))
 	if err != nil {
 		if IsUserAbort(err) {
 			fmt.Println("\nAborted.")
@@ -183,7 +183,7 @@ func getStackSelection(cmd *cobra.Command) (StackType, error) {
 	return PromptStackSelection()
 }
 
-func getFeaturesSelection(cmd *cobra.Command) ([]Feature, error) {
+func getFeaturesSelection(cmd *cobra.Command, stackType string) ([]Feature, error) {
 	// If flag was explicitly set (even to empty), use it
 	if cmd.Flags().Changed("features") {
 		if featuresFlag == "" {
@@ -205,11 +205,26 @@ func getFeaturesSelection(cmd *cobra.Command) ([]Feature, error) {
 				return nil, fmt.Errorf("invalid feature: %s (must be one of: %s)", f, strings.Join(ids, ", "))
 			}
 		}
+		// Validate features are compatible with the selected stack
+		compatible := features.ForStack(stackType)
+		compatibleIDs := make(map[string]bool, len(compatible))
+		for _, cf := range compatible {
+			compatibleIDs[cf.ID()] = true
+		}
+		for _, f := range cleanStrs {
+			if !compatibleIDs[f] {
+				var validIDs []string
+				for _, cf := range compatible {
+					validIDs = append(validIDs, cf.ID())
+				}
+				return nil, fmt.Errorf("feature %q is not compatible with stack %q (compatible features: %s)", f, stackType, strings.Join(validIDs, ", "))
+			}
+		}
 		return ParseFeatures(cleanStrs), nil
 	}
 
 	// Otherwise, prompt
-	return PromptFeatureSelection()
+	return PromptFeatureSelection(stackType)
 }
 
 func validateProjectName(name string) error {

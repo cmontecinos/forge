@@ -19,5 +19,5 @@ func (f *apiFeature) Description() string {
 }
 
 func (f *apiFeature) CompatibleStacks() []string {
-	return nil // Compatible with all stacks
+	return []string{"web", "mobile"}
 }

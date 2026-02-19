@@ -19,5 +19,5 @@ func (f *databaseFeature) Description() string {
 }
 
 func (f *databaseFeature) CompatibleStacks() []string {
-	return nil // Compatible with all stacks
+	return []string{"web", "mobile", "web-fullstack"}
 }
