@@ -170,6 +170,29 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 <br/>
 
+## Repo Structure
+
+```
+forge/
+├── cmd/forge/              # CLI entry point
+├── internal/
+│   ├── cli/                # Cobra commands, prompts, output
+│   ├── config/             # Version metadata (ldflags)
+│   ├── features/           # Feature registry (auth, database, api)
+│   ├── stacks/             # Stack registry (web, mobile, web-fullstack)
+│   └── templates/          # Git clone & template processing engine
+├── templates/
+│   ├── web/                # Web stack template (Next.js + Go + Supabase)
+│   │   ├── backend/
+│   │   ├── frontend/
+│   │   └── package.json
+│   └── web-fullstack/      # Web fullstack template (Next.js + Supabase)
+├── logo.svg
+└── README.md
+```
+
+> Templates live in `templates/`. The CLI clones from remote Git repos at runtime — these local copies are the source of truth for the template content.
+
 ## Development
 
 ```bash
